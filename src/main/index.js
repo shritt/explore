@@ -1,17 +1,39 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+
+import pngIcon from '../../resources/icon.png?asset'
+import icoIcon from '../../resources/icon.ico?asset'
+import icnsIcon from '../../resources/icon.icns?asset'
+import Store from '../utils/Store'
+
+const userPreferences = new Store({
+  configName: 'user-preferences',
+  defaults: {
+    windowBounds: { width: 1200, height: 800 },
+    settings: { maximized: false }
+  }
+})
+
+let mainWindow = null
 
 function createWindow() {
-  const mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 720,
+  mainWindow = new BrowserWindow({
+    width: userPreferences.get('windowBounds').width,
+    height: userPreferences.get('windowBounds').height,
     show: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    icon:
+      process.platform == 'linux'
+        ? pngIcon
+        : process.platform == 'darwin'
+          ? icnsIcon
+          : process.platform == 'win32'
+            ? icoIcon
+            : null,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
+      webSecurity: true,
       sandbox: false
     }
   })
@@ -41,8 +63,26 @@ app.whenReady().then(() => {
 
   createWindow()
 
+  if (userPreferences.get('settings').maximized == true) {
+    mainWindow.maximize()
+  }
+
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
+
+  mainWindow.on('resize', () => {
+    const { width, height } = mainWindow.getBounds()
+    userPreferences.set('windowBounds', { width, height })
+  })
+
+  mainWindow.on('maximize', () => {
+    userPreferences.set('settings', { maximized: true })
+  })
+
+  mainWindow.on('unmaximize', () => {
+    mainWindow.setSize(1200, 800)
+    userPreferences.set('settings', { maximized: false })
   })
 })
 
