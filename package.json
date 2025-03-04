@@ -1,10 +1,10 @@
 {
   "name": "monochrome",
   "version": "1.0.0",
-  "description": "An Electron application with React",
+  "description": "Monochrome v1.0",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
+  "author": "jpdoshi",
+  "homepage": "https://github.com/jpdoshi/monochrome",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
