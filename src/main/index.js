@@ -25,6 +25,7 @@ function createWindow() {
     backgroundMaterial: 'acrylic',
     show: false,
     autoHideMenuBar: true,
+    maximizable: false,
     titleBarStyle: 'hidden',
     icon:
       process.platform == 'linux'
@@ -104,10 +105,8 @@ ipcMain.handle('toggle-maximize', () => {
   return mainWindow.isMaximized()
 })
 
-ipcMain.handle('quit-app', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
+ipcMain.handle('close-window', () => {
+  mainWindow.close()
 })
 
 ipcMain.handle('minimize', () => {
