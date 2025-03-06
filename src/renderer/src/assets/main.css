@@ -1,1 +1,43 @@
 @import 'tailwindcss';
+
+:root {
+  --bg-light: #f5f5f5;
+  --bg-dark: #212121;
+
+  --text-light: #212121;
+  --text-dark: #f5f5f5;
+}
+
+body {
+  color: var(--text-light);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.top-bar {
+  app-region: drag;
+  user-select: none;
+}
+
+.side-bar {
+  user-select: none;
+}
+
+.top-bar input,
+.top-bar button,
+.top-bar image {
+  app-region: no-drag;
+  outline: none;
+}
+
+.side-bar input,
+.side-bar button,
+.side-bar image {
+  outline: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: var(--text-dark);
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}

@@ -21,8 +21,11 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: userPreferences.get('windowBounds').width,
     height: userPreferences.get('windowBounds').height,
+    frame: false,
+    backgroundMaterial: 'acrylic',
     show: false,
     autoHideMenuBar: true,
+    titleBarStyle: 'hidden',
     icon:
       process.platform == 'linux'
         ? pngIcon
@@ -82,8 +85,33 @@ app.whenReady().then(() => {
 
   mainWindow.on('unmaximize', () => {
     mainWindow.setSize(1200, 800)
+    mainWindow.center()
     userPreferences.set('settings', { maximized: false })
   })
+})
+
+ipcMain.handle('is-maximized', () => {
+  return mainWindow.isMaximized()
+})
+
+ipcMain.handle('toggle-maximize', () => {
+  if (mainWindow.isMaximized()) {
+    mainWindow.unmaximize()
+  } else {
+    mainWindow.maximize()
+  }
+
+  return mainWindow.isMaximized()
+})
+
+ipcMain.handle('quit-app', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+
+ipcMain.handle('minimize', () => {
+  mainWindow.minimize()
 })
 
 app.on('window-all-closed', () => {
