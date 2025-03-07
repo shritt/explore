@@ -24,12 +24,12 @@ const Topbar = ({ show }) => {
       {/* left div */}
       <div className="flex">
         {/* app icon */}
-        <img src={Icon} height={32} width={32} />
+        <img src={Icon} className="h-[28px] w-[28px]" />
         {/* button controls */}
         <div className="flex ms-[8px] gap-[4px]">
           {/* back button */}
           <motion.button whileHover={{ scale: 1.2 }} whileTap={{ x: -4 }}>
-            <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none">
+            <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none">
               <g id="SVGRepo_iconCarrier">
                 <path
                   d="M15 7L10 12L15 17"
@@ -43,7 +43,7 @@ const Topbar = ({ show }) => {
           </motion.button>
           {/* forward button */}
           <motion.button whileHover={{ scale: 1.2 }} whileTap={{ x: 4 }}>
-            <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" className="rotate-180">
+            <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" className="rotate-180">
               <g id="SVGRepo_iconCarrier">
                 <path
                   d="M15 7L10 12L15 17"
@@ -61,7 +61,7 @@ const Topbar = ({ show }) => {
             whileHover={{ rotate: 360 + 45 }}
             whileTap={{ scale: 2 / 3 }}
           >
-            <svg width="24px" height="24px" viewBox="0 0 16 16" fill="none">
+            <svg width="22px" height="22px" viewBox="0 0 16 16" fill="none">
               <g id="SVGRepo_iconCarrier">
                 <path
                   className="fill-[var(--text-light)] dark:fill-[var(--text-dark)]"
