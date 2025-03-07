@@ -6,8 +6,7 @@ const App = () => {
   return (
     <main>
       <Topbar show={true} />
-      <Sidebar show={true} />
-      {/* <h1 className="text-3xl pt-[52px] ps-[64px]">Content</h1> */}
+      <Sidebar show={true} expanded={false} />
     </main>
   )
 }
