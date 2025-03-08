@@ -30,6 +30,7 @@ function createWindow() {
     show: false,
     autoHideMenuBar: true,
     maximizable: false,
+    minWidth: 720,
     titleBarStyle: 'hidden',
     icon:
       process.platform == 'linux'
@@ -111,9 +112,9 @@ function createTab() {
   tab.setBorderRadius(8)
   tab.setBounds({
     x: isSidebarOpen == true ? 200 : 52,
-    y: 48,
+    y: 40,
     width: isSidebarOpen == true ? windowBounds.width - 200 - 8 : windowBounds.width - 52 - 8,
-    height: windowBounds.height - 48 - 8
+    height: windowBounds.height - 40 - 8
   })
 
   tabs.push({ index: tabs.length + 1, tab, isClosed: false })
@@ -160,9 +161,9 @@ function resizeTab() {
 
   tabs[currentTab].tab.setBounds({
     x: isSidebarOpen == true ? 200 : 52,
-    y: 48,
+    y: 40,
     width: isSidebarOpen == true ? width - 200 - 8 : width - 52 - 8,
-    height: height - 48 - 8
+    height: height - 40 - 8
   })
 }
 
@@ -170,8 +171,8 @@ function animateSidebar() {
   const { width, height } = mainWindow.getBounds()
   const targetX = isSidebarOpen ? 200 : 52
   const targetWidth = isSidebarOpen ? width - 200 - 8 : width - 52 - 8
-  const targetY = 48
-  const targetHeight = height - 48 - 8
+  const targetY = 40
+  const targetHeight = height - 40 - 8
 
   const tab = tabs[currentTab].tab
   const currentBounds = tab.getBounds()

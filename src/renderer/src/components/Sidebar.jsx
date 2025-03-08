@@ -6,7 +6,7 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
     <motion.div
       initial={{ left: 0, width: 200 }}
       animate={{ left: show == true ? 0 : -52, width: isExpanded == true ? 200 : 52 }}
-      className="side-bar fixed h-[calc(100vh-52px)] top-[48px] flex flex-col justify-between py-[8px] pb-[12px]"
+      className="side-bar fixed h-[calc(100vh-52px)] top-[40px] flex flex-col justify-between pt-[2px] pb-[4px]"
       style={{ alignItems: 'center' }}
     >
       {/* top list */}

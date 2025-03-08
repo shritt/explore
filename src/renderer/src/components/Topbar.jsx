@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
-import Icon from '../assets/icon.png?asset'
-
 const Topbar = ({ show }) => {
   const [isMaximized, setIsMaximized] = useState(false)
 
@@ -17,16 +15,14 @@ const Topbar = ({ show }) => {
 
   return (
     <motion.div
-      animate={{ top: show == true ? 0 : -48 }}
-      className="top-bar fixed h-[48px] left-0 w-full flex justify-between ps-[10px] pe-[12px]"
+      animate={{ top: show == true ? 0 : -40 }}
+      className="top-bar fixed h-[40px] left-0 w-full flex justify-between pe-[12px]"
       style={{ alignItems: 'center' }}
     >
       {/* left div */}
       <div className="flex">
-        {/* app icon */}
-        <img src={Icon} className="h-[28px] w-[28px]" />
         {/* button controls */}
-        <div className="flex ms-[8px] gap-[4px]">
+        <div className="flex ms-[4px] gap-[4px]">
           {/* back button */}
           <motion.button whileHover={{ scale: 1.2 }} whileTap={{ x: -4 }}>
             <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none">
@@ -74,7 +70,7 @@ const Topbar = ({ show }) => {
       </div>
       {/* middle div */}
       <div
-        className="flex w-[50vw] max-w-[600px] bg-[#fff] dark:bg-[#242424] h-[32px] rounded-full px-[4px] gap-[8px]"
+        className="flex min-w-[400px] w-[600px] mx-[12px] bg-[#fff] dark:bg-[#242424] h-[32px] rounded-full px-[4px] gap-[8px]"
         style={{ appRegion: 'no-drag', alignItems: 'center' }}
       >
         {/* lock button */}
@@ -100,7 +96,7 @@ const Topbar = ({ show }) => {
         {/* search bar */}
         <input
           type="text"
-          className="w-full text-[13px] font-medium"
+          className="w-full text-[14px] font-medium"
           placeholder="Search or Enter URL"
           spellCheck="false"
         />
