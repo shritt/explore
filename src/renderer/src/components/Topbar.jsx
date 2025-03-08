@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 
 const Topbar = ({ show }) => {
   const [isMaximized, setIsMaximized] = useState(false)
+  const searchBarRef = useRef(null)
 
   useEffect(() => {
     const checkMaximized = async () => {
@@ -24,7 +25,13 @@ const Topbar = ({ show }) => {
         {/* button controls */}
         <div className="flex ms-[4px] gap-[4px]">
           {/* back button */}
-          <motion.button whileHover={{ scale: 1.2 }} whileTap={{ x: -4 }}>
+          <motion.button
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ x: -4 }}
+            onClick={async () => {
+              await window.electron.ipcRenderer.invoke('go-back')
+            }}
+          >
             <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none">
               <g id="SVGRepo_iconCarrier">
                 <path
@@ -38,7 +45,13 @@ const Topbar = ({ show }) => {
             </svg>
           </motion.button>
           {/* forward button */}
-          <motion.button whileHover={{ scale: 1.2 }} whileTap={{ x: 4 }}>
+          <motion.button
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ x: 4 }}
+            onClick={async () => {
+              await window.electron.ipcRenderer.invoke('go-forward')
+            }}
+          >
             <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" className="rotate-180">
               <g id="SVGRepo_iconCarrier">
                 <path
@@ -56,6 +69,9 @@ const Topbar = ({ show }) => {
             initial={{ rotate: 45 }}
             whileHover={{ rotate: 360 + 45 }}
             whileTap={{ scale: 2 / 3 }}
+            onClick={async () => {
+              await window.electron.ipcRenderer.invoke('reload')
+            }}
           >
             <svg width="22px" height="22px" viewBox="0 0 16 16" fill="none">
               <g id="SVGRepo_iconCarrier">
@@ -95,9 +111,26 @@ const Topbar = ({ show }) => {
         </div>
         {/* search bar */}
         <input
+          ref={searchBarRef}
           type="text"
           className="w-full text-[14px] font-medium"
           placeholder="Search or Enter URL"
+          onFocus={() => {
+            searchBarRef.current.select()
+          }}
+          onKeyDown={async (e) => {
+            if (e.key == 'Enter') {
+              const query = searchBarRef.current.value
+              let url = `https://google.com/search?q=${query}`
+
+              if (query.startsWith('http') || query.startsWith('https')) {
+                url = query
+              }
+
+              searchBarRef.current.blur()
+              await window.electron.ipcRenderer.invoke('load-url', url)
+            }
+          }}
           spellCheck="false"
         />
         {/* extra controls */}

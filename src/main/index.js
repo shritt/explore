@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, WebContentsView } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, WebContentsView, globalShortcut } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
@@ -97,6 +97,27 @@ app.whenReady().then(() => {
     userPreferences.set('settings', { maximized: false })
   })
 
+  globalShortcut.register('CommandOrControl+S', () => {
+    console.log('toggle sidebar on renderer and main')
+  })
+
+  globalShortcut.register('CommandOrControl+R', () => {
+    const activeTab = tabs[currentTab].tab
+    activeTab.webContents.reload()
+  })
+
+  globalShortcut.register('CommandOrControl+T', () => {
+    console.log('create new tab')
+  })
+
+  globalShortcut.register('CommandOrControl+Shift+T', () => {
+    console.log('open recently closed tab')
+  })
+
+  globalShortcut.register('CommandOrControl+W', () => {
+    console.log('close current tab')
+  })
+
   // ----------------------------------------------
   createTab()
   // ----------------------------------------------
@@ -138,22 +159,6 @@ function switchTab(tabIndex) {
   // set tab bounds relative to window bounds
   //
   // should not switch to sleeping(closed) tabs
-}
-
-function goBack(tabIndex) {
-  // go back in current tab
-}
-
-function goForward(tabIndex) {
-  // go forward in current tab
-}
-
-function loadUrl(tabIndex, url) {
-  // load url in current tab
-}
-
-function reload(tabIndex) {
-  // reload current tab
 }
 
 function resizeTab() {
@@ -231,8 +236,40 @@ ipcMain.handle('toggle-sidebar', () => {
   animateSidebar()
 })
 
+ipcMain.handle('go-back', () => {
+  const activeTab = tabs[currentTab].tab
+
+  if (activeTab.webContents.navigationHistory.canGoBack()) {
+    activeTab.webContents.navigationHistory.goBack()
+  }
+})
+
+ipcMain.handle('go-forward', () => {
+  const activeTab = tabs[currentTab].tab
+
+  if (activeTab.webContents.navigationHistory.canGoForward()) {
+    activeTab.webContents.navigationHistory.goForward()
+  }
+})
+
+ipcMain.handle('reload', () => {
+  const activeTab = tabs[currentTab].tab
+  activeTab.webContents.reload()
+})
+
+ipcMain.handle('load-url', (event, data) => {
+  const activeTab = tabs[currentTab].tab
+  const url = data
+
+  activeTab.webContents.loadURL(url)
+})
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
+})
+
+app.on('will-quit', () => {
+  globalShortcut.unregisterAll()
 })
