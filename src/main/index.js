@@ -17,7 +17,9 @@ const userPreferences = new Store({
 
 let mainWindow = null
 let isSidebarOpen = true
+
 let tabs = []
+let currentTab = 0
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -80,6 +82,8 @@ app.whenReady().then(() => {
   mainWindow.on('resize', () => {
     const { width, height } = mainWindow.getBounds()
     userPreferences.set('windowBounds', { width, height })
+
+    resizeTab()
   })
 
   mainWindow.on('maximize', () => {
@@ -101,14 +105,14 @@ function createTab() {
   const tab = new WebContentsView()
   const windowBounds = mainWindow.getBounds()
 
-  tab.webContents.loadURL('https://google.com')
+  tab.webContents.loadURL('https://duckduckgo.com')
 
   tab.setBackgroundColor('white')
   tab.setBorderRadius(8)
   tab.setBounds({
-    x: isSidebarOpen ? 200 : 52,
+    x: isSidebarOpen == true ? 200 : 52,
     y: 48,
-    width: isSidebarOpen ? windowBounds.width - 200 - 8 : windowBounds.width - 52 - 8,
+    width: isSidebarOpen == true ? windowBounds.width - 200 - 8 : windowBounds.width - 52 - 8,
     height: windowBounds.height - 48 - 8
   })
 
@@ -143,8 +147,23 @@ function goForward(tabIndex) {
   // go forward in current tab
 }
 
+function loadUrl(tabIndex, url) {
+  // load url in current tab
+}
+
 function reload(tabIndex) {
   // reload current tab
+}
+
+function resizeTab() {
+  const { width, height } = mainWindow.getBounds()
+
+  tabs[currentTab].tab.setBounds({
+    x: isSidebarOpen == true ? 200 : 52,
+    y: 48,
+    width: isSidebarOpen == true ? width - 200 - 8 : width - 52 - 8,
+    height: height - 48 - 8
+  })
 }
 
 ipcMain.handle('is-maximized', () => {
@@ -167,6 +186,11 @@ ipcMain.handle('close-window', () => {
 
 ipcMain.handle('minimize', () => {
   mainWindow.minimize()
+})
+
+ipcMain.handle('toggle-sidebar', () => {
+  isSidebarOpen = !isSidebarOpen
+  resizeTab()
 })
 
 app.on('window-all-closed', () => {

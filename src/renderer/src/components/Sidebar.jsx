@@ -20,9 +20,9 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
             whileTap={{ scale: 0.9 }}
             key={index}
             onClick={() => {
-              setCurrentTab(index)
+              setCurrentTab(tab.index)
             }}
-            className={`relative flex gap-[6px] bg-[#fff] dark:bg-[#242424] rounded-full h-[38px] w-[180px] px-[10px] shadow ${currentTab == index ? 'outline-2 -outline-offset-2 outline-[rgba(0,0,0,0.5)] dark:outline-[rgba(255,255,255,0.5)]' : ''}`}
+            className={`relative flex gap-[6px] bg-[#fff] dark:bg-[#242424] rounded-full h-[38px] w-[180px] px-[10px] shadow ${currentTab == tab.index ? 'outline-2 -outline-offset-2 outline-[rgba(0,0,0,0.5)] dark:outline-[rgba(255,255,255,0.5)]' : ''}`}
             style={{ alignItems: 'center' }}
           >
             <img src={tab.icon} className="h-[20px] w-[20px] block" />
@@ -76,7 +76,8 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
           animate={{ width: isExpanded == true ? 160 : 20 }}
           className="flex h-[20px] gap-[8px] w-[160px]"
           style={{ alignItems: 'center' }}
-          onClick={() => {
+          onClick={async () => {
+            await window.electron.ipcRenderer.invoke('toggle-sidebar')
             setIsExpanded((prevVal) => !prevVal)
           }}
         >
