@@ -10,7 +10,7 @@
 
 body {
   color: var(--text-light);
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.75);
 }
 
 .top-bar {
@@ -38,6 +38,6 @@ body {
 @media (prefers-color-scheme: dark) {
   body {
     color: var(--text-dark);
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.75);
   }
 }

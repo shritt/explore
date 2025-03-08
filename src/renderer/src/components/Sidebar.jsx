@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, setCurrentTab }) => {
   return (
     <motion.div
+      initial={{ left: 0, width: 200 }}
       animate={{ left: show == true ? 0 : -52, width: isExpanded == true ? 200 : 52 }}
       className="side-bar fixed h-[calc(100vh-52px)] top-[48px] flex flex-col justify-between py-[8px] pb-[12px]"
       style={{ alignItems: 'center' }}
@@ -15,10 +16,13 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
           <motion.div
             initial={{ width: 180 }}
             animate={{ width: isExpanded == true ? 180 : 38 }}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: isExpanded == true ? 1.05 : 1.1 }}
             whileTap={{ scale: 0.9 }}
             key={index}
-            className="flex gap-[6px] bg-[#fff] dark:bg-[#242424] rounded-full h-[38px] w-[180px] px-[10px]"
+            onClick={() => {
+              setCurrentTab(index)
+            }}
+            className={`relative flex gap-[6px] bg-[#fff] dark:bg-[#242424] rounded-full h-[38px] w-[180px] px-[10px] shadow ${currentTab == index ? 'outline-2 -outline-offset-2 outline-[rgba(0,0,0,0.5)] dark:outline-[rgba(255,255,255,0.5)]' : ''}`}
             style={{ alignItems: 'center' }}
           >
             <img src={tab.icon} className="h-[20px] w-[20px] block" />
@@ -28,6 +32,11 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
             >
               {tab.title}
             </motion.p>
+            <motion.div
+              initial={{ opacity: 1 }}
+              animate={{ opacity: isExpanded == true ? 1 : 0 }}
+              className="absolute right-[2px] top-[2px] h-[34px] bg-[linear-gradient(to_right,transparent,#fff)] dark:bg-[linear-gradient(to_right,transparent,#242424)] w-[80px] rounded-r-full"
+            ></motion.div>
           </motion.div>
         ))}
         {/* plus button */}
@@ -36,7 +45,7 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           animate={{ height: isExpanded == true ? 32 : 28, width: isExpanded == true ? 32 : 28 }}
-          className="rounded-full bg-[#fff] dark:bg-[#242424] relative"
+          className="rounded-full bg-[#fff] dark:bg-[#242424] relative shadow-md"
         >
           <svg
             width="24px"
