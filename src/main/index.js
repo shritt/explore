@@ -166,6 +166,43 @@ function resizeTab() {
   })
 }
 
+function animateSidebar() {
+  const { width, height } = mainWindow.getBounds()
+  const targetX = isSidebarOpen ? 200 : 52
+  const targetWidth = isSidebarOpen ? width - 200 - 8 : width - 52 - 8
+  const targetY = 48
+  const targetHeight = height - 48 - 8
+
+  const tab = tabs[currentTab].tab
+  const currentBounds = tab.getBounds()
+
+  const duration = 200
+  const startTime = Date.now()
+
+  function animate() {
+    const now = Date.now()
+    const progress = Math.min((now - startTime) / duration, 1)
+
+    const newX = currentBounds.x + (targetX - currentBounds.x) * progress
+    const newY = currentBounds.y + (targetY - currentBounds.y) * progress
+    const newWidth = currentBounds.width + (targetWidth - currentBounds.width) * progress
+    const newHeight = currentBounds.height + (targetHeight - currentBounds.height) * progress
+
+    tab.setBounds({
+      x: newX,
+      y: newY,
+      width: newWidth,
+      height: newHeight
+    })
+
+    if (progress < 1) {
+      setTimeout(animate, 16) // ~60 FPS (1000ms / 60 ≈ 16ms per frame)
+    }
+  }
+
+  animate()
+}
+
 ipcMain.handle('is-maximized', () => {
   return mainWindow.isMaximized()
 })
@@ -190,7 +227,7 @@ ipcMain.handle('minimize', () => {
 
 ipcMain.handle('toggle-sidebar', () => {
   isSidebarOpen = !isSidebarOpen
-  resizeTab()
+  animateSidebar()
 })
 
 app.on('window-all-closed', () => {
