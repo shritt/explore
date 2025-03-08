@@ -70,7 +70,7 @@ const Topbar = ({ show }) => {
       </div>
       {/* middle div */}
       <div
-        className="flex min-w-[400px] w-[600px] mx-[12px] bg-[#fff] dark:bg-[#242424] h-[32px] rounded-full px-[4px] gap-[8px]"
+        className="flex min-w-[400px] w-[600px] mx-[12px] bg-[#fff] dark:bg-[#242424] h-[32px] rounded-full px-[4px] gap-[8px] shadow-sm"
         style={{ appRegion: 'no-drag', alignItems: 'center' }}
       >
         {/* lock button */}
@@ -154,7 +154,7 @@ const Topbar = ({ show }) => {
         {/* extra buttons */}
         <div className="flex gap-[12px]">
           {/* extensions button */}
-          <motion.button whileHover={{ scale: 1.2 }} whileTap={{ scale: 2 / 3 }}>
+          <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
             <svg
               width="20px"
               height="20px"
@@ -171,7 +171,7 @@ const Topbar = ({ show }) => {
             </svg>
           </motion.button>
           {/* more button */}
-          <motion.button whileHover={{ scale: 1.2 }} whileTap={{ scale: 2 / 3 }}>
+          <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
             <svg
               width="24px"
               height="24px"
@@ -194,7 +194,7 @@ const Topbar = ({ show }) => {
           <motion.button
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 2 / 3 }}
-            className="bg-[#fff] dark:bg-[#313131] dark:hover:bg-[#424242] group h-[24px] w-[24px] relative rounded-full"
+            className="bg-[#fff] dark:bg-[#313131] dark:hover:bg-[#424242] group h-[24px] w-[24px] relative rounded-full shadow-sm"
             onClick={async () => {
               await window.electron.ipcRenderer.invoke('minimize')
             }}
@@ -221,7 +221,7 @@ const Topbar = ({ show }) => {
           <motion.button
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 2 / 3 }}
-            className="bg-[#fff] dark:bg-[#313131] dark:hover:bg-[#424242] group h-[24px] w-[24px] relative rounded-full"
+            className="bg-[#fff] dark:bg-[#313131] dark:hover:bg-[#424242] group h-[24px] w-[24px] relative rounded-full shadow-sm"
             onClick={async () => {
               const isMax = await window.electron.ipcRenderer.invoke('toggle-maximize')
               setIsMaximized(isMax)
@@ -266,7 +266,7 @@ const Topbar = ({ show }) => {
           <motion.button
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 2 / 3 }}
-            className="bg-[#fff] dark:bg-[#313131] hover:bg-[#e53935] group h-[24px] w-[24px] relative rounded-full"
+            className="bg-[#fff] dark:bg-[#313131] hover:bg-[#e53935] duration-200 transition-colors group h-[24px] w-[24px] relative rounded-full shadow-sm"
             onClick={async () => {
               await window.electron.ipcRenderer.invoke('close-window')
             }}

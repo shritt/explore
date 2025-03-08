@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+
 import Topbar from './components/Topbar'
 import Sidebar from './components/Sidebar'
 
@@ -44,6 +45,9 @@ const App = () => {
         setTabs={setTabs}
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
+      />
+      <div
+        className={`absolute outline-1 outline-[rgba(0,0,0,0.1)] rounded-[8px] h-[calc(100vh-40px-8px)] duration-200 top-[40px] ${isSidebarExpanded == true ? 'w-[calc(100vw-200px-6px)] left-[200px]' : 'w-[calc(100vw-52px-6px)] left-[52px]'}`}
       />
     </main>
   )
