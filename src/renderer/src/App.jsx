@@ -25,37 +25,6 @@ const App = () => {
   ])
   const [currentTab, setCurrentTab] = useState(0)
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.ctrlKey && e.key == 's') {
-        setIsSidebarExpanded((prevVal) => !prevVal)
-      }
-
-      if (e.ctrlKey && e.key == 'w') {
-        e.preventDefault()
-        console.log('close current tab')
-      }
-
-      if (e.ctrlKey && e.key == 't') {
-        console.log('open new tab')
-      }
-
-      if (e.ctrlKey && e.shiftKey && e.key == 'T') {
-        console.log('open currently closed tab')
-      }
-
-      if (e.ctrlKey && e.key == 'Tab') {
-        console.log('cycle through tabs')
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [])
-
   return (
     <main>
       <Topbar show={true} />

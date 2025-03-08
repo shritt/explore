@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, WebContentsView } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
@@ -16,6 +16,8 @@ const userPreferences = new Store({
 })
 
 let mainWindow = null
+let isSidebarOpen = true
+let tabs = []
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -89,7 +91,61 @@ app.whenReady().then(() => {
     mainWindow.center()
     userPreferences.set('settings', { maximized: false })
   })
+
+  // ----------------------------------------------
+  createTab()
+  // ----------------------------------------------
 })
+
+function createTab() {
+  const tab = new WebContentsView()
+  const windowBounds = mainWindow.getBounds()
+
+  tab.webContents.loadURL('https://google.com')
+
+  tab.setBackgroundColor('white')
+  tab.setBorderRadius(8)
+  tab.setBounds({
+    x: isSidebarOpen ? 200 : 52,
+    y: 48,
+    width: isSidebarOpen ? windowBounds.width - 200 - 8 : windowBounds.width - 52 - 8,
+    height: windowBounds.height - 48 - 8
+  })
+
+  tabs.push({ index: tabs.length + 1, tab, isClosed: false })
+  mainWindow.contentView.addChildView(tab)
+}
+
+function closeTab(tabIndex) {
+  // make tab sleep mode with tab being closed by index
+  //
+  // remove tab from frontend, while preserving original tab to open it after
+  // being closed
+  //
+  // make it quiet so it doesn't work in background
+  //
+  // should not show when switching tabs
+}
+
+function switchTab(tabIndex) {
+  // switch to tab index
+  //
+  // set tab bounds relative to window bounds
+  //
+  // should not switch to sleeping(closed) tabs
+}
+
+function goBack(tabIndex) {
+  // go back in current tab
+}
+
+function goForward(tabIndex) {
+  // go forward in current tab
+}
+
+function reload(tabIndex) {
+  // reload current tab
+}
 
 ipcMain.handle('is-maximized', () => {
   return mainWindow.isMaximized()
