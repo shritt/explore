@@ -19,8 +19,9 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
             whileHover={{ scale: isExpanded == true ? 1.05 : 1.1 }}
             whileTap={{ scale: 0.9 }}
             key={index}
-            onClick={() => {
+            onClick={async () => {
               setCurrentTab(tab.index)
+              await window.electron.ipcRenderer.invoke('update-current-tab', { index: tab.index })
             }}
             className={`relative flex gap-[6px] bg-[#fff] dark:bg-[#242424] rounded-full h-[38px] w-[180px] px-[10px] shadow ${currentTab == tab.index ? 'outline-2 -outline-offset-2 outline-[rgba(0,0,0,0.5)] dark:outline-[rgba(255,255,255,0.5)]' : ''}`}
             style={{ alignItems: 'center' }}
@@ -44,6 +45,9 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
           initial={{ height: 32, width: 32 }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
+          onClick={async () => {
+            await window.electron.ipcRenderer.invoke('create-tab')
+          }}
           animate={{ height: isExpanded == true ? 32 : 28, width: isExpanded == true ? 32 : 28 }}
           className="rounded-full bg-[#fff] dark:bg-[#242424] relative shadow-md"
         >

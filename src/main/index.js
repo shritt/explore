@@ -319,6 +319,24 @@ ipcMain.handle('load-url', (event, data) => {
   activeTab.webContents.loadURL(url)
 })
 
+ipcMain.handle('update-current-tab', (event, data) => {
+  const { index } = data
+
+  if (tabs.length >= index) {
+    currentTab = index
+
+    for (let t of tabs) {
+      t.tab.setVisible(false)
+    }
+
+    tabs[index].tab.setVisible(true)
+  }
+})
+
+ipcMain.handle('create-tab', () => {
+  createTab()
+})
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
