@@ -147,6 +147,8 @@ function createTab() {
 
   tabs.push({ index: tabs.length + 1, tab, isClosed: false })
   mainWindow.contentView.addChildView(tab)
+
+  switchTab(tabs.length - 1)
 }
 
 function closeTab(tabIndex) {
@@ -160,12 +162,17 @@ function closeTab(tabIndex) {
   // should not show when switching tabs
 }
 
-function switchTab(tabIndex) {
-  // switch to tab index
-  //
-  // set tab bounds relative to window bounds
-  //
-  // should not switch to sleeping(closed) tabs
+function switchTab(index) {
+  if (tabs.length >= index) {
+    currentTab = index
+
+    for (let t of tabs) {
+      t.tab.setVisible(false)
+    }
+
+    tabs[index].tab.setVisible(true)
+    mainWindow.webContents.send('update-tab', { index })
+  }
 }
 
 function reloadTab() {
@@ -209,7 +216,7 @@ function registerShortcuts() {
   })
 
   globalShortcut.register('CommandOrControl+T', () => {
-    console.log('create new tab')
+    createTab()
   })
 
   globalShortcut.register('CommandOrControl+Shift+T', () => {
@@ -218,6 +225,16 @@ function registerShortcuts() {
 
   globalShortcut.register('CommandOrControl+W', () => {
     console.log('close current tab')
+  })
+
+  globalShortcut.register('CommandOrControl+Tab', () => {
+    currentTab++
+
+    if (currentTab < tabs.length) {
+      switchTab(currentTab)
+    } else {
+      switchTab(0)
+    }
   })
 }
 
@@ -322,15 +339,7 @@ ipcMain.handle('load-url', (event, data) => {
 ipcMain.handle('update-current-tab', (event, data) => {
   const { index } = data
 
-  if (tabs.length >= index) {
-    currentTab = index
-
-    for (let t of tabs) {
-      t.tab.setVisible(false)
-    }
-
-    tabs[index].tab.setVisible(true)
-  }
+  switchTab(index)
 })
 
 ipcMain.handle('create-tab', () => {

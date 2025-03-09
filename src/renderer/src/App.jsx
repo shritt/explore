@@ -43,12 +43,19 @@ const App = () => {
       setIsSidebarExpanded(false)
     }
 
+    const updateCurrentTab = (event, data) => {
+      const { index } = data
+      setCurrentTab(index)
+    }
+
     window.electron.ipcRenderer.on('open-sidebar', openSidebar)
     window.electron.ipcRenderer.on('close-sidebar', closeSidebar)
+    window.electron.ipcRenderer.on('update-tab', updateCurrentTab)
 
     return () => {
       window.electron.ipcRenderer.removeListener('open-sidebar', openSidebar)
       window.electron.ipcRenderer.removeListener('close-sidebar', openSidebar)
+      window.electron.ipcRenderer.removeListener('update-tab', updateCurrentTab)
     }
   }, [])
 
