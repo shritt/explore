@@ -215,14 +215,20 @@ function animateTab() {
   const duration = 200
   const startTime = Date.now()
 
+  function easeOutQuad(t) {
+    return t * (2 - t) // Easing function for smoother animation
+  }
+
   function animate() {
     const now = Date.now()
-    const progress = Math.min((now - startTime) / duration, 1)
+    const elapsedTime = now - startTime
+    const progress = Math.min(elapsedTime / duration, 1)
+    const easedProgress = easeOutQuad(progress) // Apply easing
 
-    const newX = currentBounds.x + (targetX - currentBounds.x) * progress
-    const newY = currentBounds.y + (targetY - currentBounds.y) * progress
-    const newWidth = currentBounds.width + (targetWidth - currentBounds.width) * progress
-    const newHeight = currentBounds.height + (targetHeight - currentBounds.height) * progress
+    const newX = currentBounds.x + (targetX - currentBounds.x) * easedProgress
+    const newY = currentBounds.y + (targetY - currentBounds.y) * easedProgress
+    const newWidth = currentBounds.width + (targetWidth - currentBounds.width) * easedProgress
+    const newHeight = currentBounds.height + (targetHeight - currentBounds.height) * easedProgress
 
     tab.setBounds({
       x: newX,
@@ -232,7 +238,7 @@ function animateTab() {
     })
 
     if (progress < 1) {
-      setTimeout(animate, 16)
+      setImmediate(animate) // Use setImmediate to simulate smooth animation
     }
   }
 
