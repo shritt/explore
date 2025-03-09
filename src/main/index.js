@@ -79,8 +79,20 @@ app.whenReady().then(() => {
   })
 
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-    details.requestHeaders['User-Agent'] =
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
+    if (process.platform == 'win32') {
+      details.requestHeaders['User-Agent'] =
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
+    }
+
+    if (process.platform == 'linux') {
+      details.requestHeaders['User-Agent'] =
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
+    }
+
+    if (process.platform == 'darwin') {
+      details.requestHeaders['User-Agent'] =
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
+    }
     callback({ cancel: false, requestHeaders: details.requestHeaders })
   })
 
@@ -174,7 +186,14 @@ function resizeTab() {
 
 function registerShortcuts() {
   globalShortcut.register('CommandOrControl+S', () => {
-    console.log('toggle sidebar on renderer and main')
+    if (isSidebarOpen == true) {
+      mainWindow.webContents.send('close-sidebar')
+    } else {
+      mainWindow.webContents.send('open-sidebar')
+    }
+
+    isSidebarOpen = !isSidebarOpen
+    animateTab()
   })
 
   globalShortcut.register('CommandOrControl+R', () => {
@@ -212,23 +231,18 @@ function animateTab() {
   const tab = tabs[currentTab].tab
   const currentBounds = tab.getBounds()
 
-  const duration = 200
+  const duration = 250
   const startTime = Date.now()
-
-  function easeOutQuad(t) {
-    return t * (2 - t) // Easing function for smoother animation
-  }
 
   function animate() {
     const now = Date.now()
     const elapsedTime = now - startTime
     const progress = Math.min(elapsedTime / duration, 1)
-    const easedProgress = easeOutQuad(progress) // Apply easing
 
-    const newX = currentBounds.x + (targetX - currentBounds.x) * easedProgress
-    const newY = currentBounds.y + (targetY - currentBounds.y) * easedProgress
-    const newWidth = currentBounds.width + (targetWidth - currentBounds.width) * easedProgress
-    const newHeight = currentBounds.height + (targetHeight - currentBounds.height) * easedProgress
+    const newX = currentBounds.x + (targetX - currentBounds.x) * progress
+    const newY = currentBounds.y + (targetY - currentBounds.y) * progress
+    const newWidth = currentBounds.width + (targetWidth - currentBounds.width) * progress
+    const newHeight = currentBounds.height + (targetHeight - currentBounds.height) * progress
 
     tab.setBounds({
       x: newX,
@@ -267,8 +281,13 @@ ipcMain.handle('minimize', () => {
   mainWindow.minimize()
 })
 
-ipcMain.handle('toggle-sidebar', () => {
-  isSidebarOpen = !isSidebarOpen
+ipcMain.handle('open-sidebar', () => {
+  isSidebarOpen = true
+  animateTab()
+})
+
+ipcMain.handle('close-sidebar', () => {
+  isSidebarOpen = false
   animateTab()
 })
 

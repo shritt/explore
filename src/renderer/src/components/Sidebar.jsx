@@ -77,7 +77,11 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
           className="flex h-[20px] gap-[8px] w-[160px]"
           style={{ alignItems: 'center' }}
           onClick={async () => {
-            await window.electron.ipcRenderer.invoke('toggle-sidebar')
+            if (isExpanded == true) {
+              await window.electron.ipcRenderer.invoke('close-sidebar')
+            } else {
+              await window.electron.ipcRenderer.invoke('open-sidebar')
+            }
             setIsExpanded((prevVal) => !prevVal)
           }}
         >
