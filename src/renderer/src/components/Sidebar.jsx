@@ -28,7 +28,7 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
             <img src={tab.icon} className="h-[20px] w-[20px] block" />
             <motion.p
               animate={{ opacity: isExpanded == true ? 1 : 0 }}
-              className="text-[13px] overflow-hidden whitespace-nowrap"
+              className="text-[12px] overflow-hidden whitespace-nowrap"
             >
               {tab.title}
             </motion.p>
@@ -119,7 +119,7 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
           </div>
           <motion.p
             animate={{ opacity: isExpanded == true ? 1 : 0 }}
-            className="overflow-hidden whitespace-nowrap text-[14px]"
+            className="overflow-hidden whitespace-nowrap text-[13px]"
           >
             Toggle Sidebar
           </motion.p>
@@ -148,7 +148,7 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
           </div>
           <motion.p
             animate={{ opacity: isExpanded == true ? 1 : 0 }}
-            className="overflow-hidden whitespace-nowrap text-[14px]"
+            className="overflow-hidden whitespace-nowrap text-[13px]"
           >
             History
           </motion.p>
@@ -207,7 +207,7 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
           </div>
           <motion.p
             animate={{ opacity: isExpanded == true ? 1 : 0 }}
-            className="overflow-hidden whitespace-nowrap text-[14px]"
+            className="overflow-hidden whitespace-nowrap text-[13px]"
           >
             Downloads
           </motion.p>
@@ -247,7 +247,7 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, setTabs, currentTab, s
           </div>
           <motion.p
             animate={{ opacity: isExpanded == true ? 1 : 0 }}
-            className="overflow-hidden whitespace-nowrap text-[14px]"
+            className="overflow-hidden whitespace-nowrap text-[13px]"
           >
             Settings
           </motion.p>

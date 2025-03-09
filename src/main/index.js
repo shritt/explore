@@ -1,4 +1,12 @@
-import { app, shell, BrowserWindow, ipcMain, WebContentsView, globalShortcut } from 'electron'
+import {
+  app,
+  shell,
+  BrowserWindow,
+  ipcMain,
+  WebContentsView,
+  globalShortcut,
+  session
+} from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
@@ -70,6 +78,12 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    details.requestHeaders['User-Agent'] =
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
+    callback({ cancel: false, requestHeaders: details.requestHeaders })
+  })
+
   createWindow()
 
   if (userPreferences.get('settings').maximized == true) {
@@ -97,26 +111,7 @@ app.whenReady().then(() => {
     userPreferences.set('settings', { maximized: false })
   })
 
-  globalShortcut.register('CommandOrControl+S', () => {
-    console.log('toggle sidebar on renderer and main')
-  })
-
-  globalShortcut.register('CommandOrControl+R', () => {
-    const activeTab = tabs[currentTab].tab
-    activeTab.webContents.reload()
-  })
-
-  globalShortcut.register('CommandOrControl+T', () => {
-    console.log('create new tab')
-  })
-
-  globalShortcut.register('CommandOrControl+Shift+T', () => {
-    console.log('open recently closed tab')
-  })
-
-  globalShortcut.register('CommandOrControl+W', () => {
-    console.log('close current tab')
-  })
+  registerShortcuts()
 
   // ----------------------------------------------
   createTab()
@@ -127,7 +122,7 @@ function createTab() {
   const tab = new WebContentsView()
   const windowBounds = mainWindow.getBounds()
 
-  tab.webContents.loadURL('https://duckduckgo.com')
+  tab.webContents.loadURL('https://google.com')
 
   tab.setBackgroundColor('white')
   tab.setBorderRadius(8)
@@ -161,6 +156,11 @@ function switchTab(tabIndex) {
   // should not switch to sleeping(closed) tabs
 }
 
+function reloadTab() {
+  const activeTab = tabs[currentTab].tab
+  activeTab.webContents.reload()
+}
+
 function resizeTab() {
   const { width, height } = mainWindow.getBounds()
 
@@ -172,7 +172,37 @@ function resizeTab() {
   })
 }
 
-function animateSidebar() {
+function registerShortcuts() {
+  globalShortcut.register('CommandOrControl+S', () => {
+    console.log('toggle sidebar on renderer and main')
+  })
+
+  globalShortcut.register('CommandOrControl+R', () => {
+    reloadTab()
+  })
+
+  globalShortcut.register('CommandOrControl+Shift+R', () => {
+    reloadTab()
+  })
+
+  globalShortcut.register('F5', () => {
+    reloadTab()
+  })
+
+  globalShortcut.register('CommandOrControl+T', () => {
+    console.log('create new tab')
+  })
+
+  globalShortcut.register('CommandOrControl+Shift+T', () => {
+    console.log('open recently closed tab')
+  })
+
+  globalShortcut.register('CommandOrControl+W', () => {
+    console.log('close current tab')
+  })
+}
+
+function animateTab() {
   const { width, height } = mainWindow.getBounds()
   const targetX = isSidebarOpen ? 200 : 52
   const targetWidth = isSidebarOpen ? width - 200 - 8 : width - 52 - 8
@@ -202,7 +232,7 @@ function animateSidebar() {
     })
 
     if (progress < 1) {
-      setTimeout(animate, 16) // ~60 FPS (1000ms / 60 ≈ 16ms per frame)
+      setTimeout(animate, 16)
     }
   }
 
@@ -233,7 +263,7 @@ ipcMain.handle('minimize', () => {
 
 ipcMain.handle('toggle-sidebar', () => {
   isSidebarOpen = !isSidebarOpen
-  animateSidebar()
+  animateTab()
 })
 
 ipcMain.handle('go-back', () => {
@@ -272,4 +302,12 @@ app.on('window-all-closed', () => {
 
 app.on('will-quit', () => {
   globalShortcut.unregisterAll()
+})
+
+app.on('browser-window-blur', () => {
+  globalShortcut.unregisterAll()
+})
+
+app.on('browser-window-focus', () => {
+  registerShortcuts()
 })

@@ -113,7 +113,7 @@ const Topbar = ({ show }) => {
         <input
           ref={searchBarRef}
           type="text"
-          className="w-full text-[14px] font-medium"
+          className="w-full text-[13px] leading-[100%]"
           placeholder="Search or Enter URL"
           onFocus={() => {
             searchBarRef.current.select()
