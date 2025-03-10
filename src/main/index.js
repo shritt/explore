@@ -163,7 +163,7 @@ function closeTab(tabIndex) {
 }
 
 function switchTab(index) {
-  if (tabs.length >= index) {
+  if (tabs.length > index) {
     currentTab = index
 
     for (let t of tabs) {

@@ -67,7 +67,6 @@ const App = () => {
         isExpanded={isSidebarExpanded}
         setIsExpanded={setIsSidebarExpanded}
         tabs={tabs}
-        setTabs={setTabs}
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
       />
