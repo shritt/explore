@@ -1,10 +1,10 @@
 {
-  "name": "monochrome",
+  "name": "monochromium",
   "version": "1.0.0",
-  "description": "Monochrome v1.0",
+  "description": "Monochromium v1.0",
   "main": "./out/main/index.js",
   "author": "jpdoshi",
-  "homepage": "https://github.com/jpdoshi/monochrome",
+  "homepage": "https://github.com/jpdoshi/monochromium",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",

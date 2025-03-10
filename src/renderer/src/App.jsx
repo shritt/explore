@@ -9,7 +9,7 @@ const App = () => {
   const [tabs, setTabs] = useState([
     {
       icon: 'https://cdn.iconscout.com/icon/free/png-256/free-notion-logo-icon-download-in-svg-png-gif-file-formats--productivity-application-brand-apps-pack-logos-icons-8630396.png',
-      title: 'Monochrome',
+      title: 'Monochromium',
       index: 0,
       isClosed: false
     },
@@ -27,7 +27,7 @@ const App = () => {
     },
     {
       icon: 'https://cdn-icons-png.flaticon.com/512/2111/2111615.png',
-      title: 'Monochrome - Slack',
+      title: 'Monochromium - Slack',
       index: 3,
       isClosed: false
     }

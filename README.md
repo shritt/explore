@@ -1,4 +1,4 @@
-# monochrome
+# monochromium
 
 An Electron application with React
 

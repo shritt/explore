@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: monochrome
+appId: com.jpdoshi.tech
+productName: monochromium
 directories:
   buildResources: build
 files:
@@ -11,7 +11,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: monochrome
+  executableName: monochromium
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
