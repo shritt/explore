@@ -26,7 +26,7 @@ const Tab = ({ index, title, currentTab, setCurrentTab, domain, isExpanded }) =>
       style={{ alignItems: 'center' }}
     >
       <img
-        src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64` || noIcon}
+        src={`https://www.google.com/s2/favicons?domain=${domain}&sz=32` || noIcon}
         className={`${isExpanded == true ? 'h-[20px]' : 'h-[18px]'} w-[20px] block`}
       />
       <motion.p

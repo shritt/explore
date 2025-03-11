@@ -1,12 +1,14 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
-const NavControls = () => {
+const NavControls = ({ controls }) => {
   return (
     <div className="flex">
       <div className="flex ms-[4px] gap-[4px]">
         {/* back button */}
         <motion.button
+          initial={{ opacity: 0.25 }}
+          animate={{ opacity: controls.canGoBack == true ? 1 : 0.5 }}
           whileHover={{ scale: 1.2 }}
           whileTap={{ x: -4 }}
           onClick={async () => {
@@ -27,6 +29,8 @@ const NavControls = () => {
         </motion.button>
         {/* forward button */}
         <motion.button
+          initial={{ opacity: 0.25 }}
+          animate={{ opacity: controls.canGoForward == true ? 1 : 0.5 }}
           whileHover={{ scale: 1.2 }}
           whileTap={{ x: 4 }}
           onClick={async () => {

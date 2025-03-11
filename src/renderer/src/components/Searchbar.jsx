@@ -1,21 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 
-const Searchbar = () => {
-  const searchBarRef = useRef(null)
-
-  useEffect(() => {
-    const updateUrl = (event, data) => {
-      const { url } = data
-      searchBarRef.current.value = url
-    }
-
-    window.electron.ipcRenderer.on('update-url', updateUrl)
-
-    return () => {
-      window.electron.ipcRenderer.removeListener('update-url', updateUrl)
-    }
-  }, [])
-
+const Searchbar = ({ searchBarRef }) => {
   return (
     <div
       className="flex min-w-[400px] w-[600px] mx-[12px] bg-[#fff] dark:bg-[#242424] h-[32px] rounded-full px-[4px] gap-[8px] shadow-sm"
