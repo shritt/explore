@@ -133,7 +133,7 @@ app.whenReady().then(() => {
 function createTab() {
   const tab = new WebContentsView()
   const windowBounds = mainWindow.getBounds()
-  const index = tabs.length > 0 ? currentTab + 1 : 0
+  const index = tabs.length
 
   tab.webContents.loadURL('https://google.com')
 
@@ -162,8 +162,10 @@ function createTab() {
   })
 
   tab.webContents.on('page-favicon-updated', (event, favicons) => {
-    tabs[index].icon = favicons[0]
-    sendTabList()
+    if (tabs[index]) {
+      tabs[index].icon = favicons[0]
+      sendTabList()
+    }
   })
 
   tab.webContents.on('page-title-updated', () => {
