@@ -8,8 +8,10 @@ const Tab = ({ index, title, currentTab, setCurrentTab, domain, isExpanded }) =>
 
   useEffect(() => {
     const getIcons = (event, data) => {
-      const { favicons } = data
-      setIcon(favicons[0])
+      const { favicons, currentTab } = data
+      if (index == currentTab) {
+        setIcon(favicons[0])
+      }
     }
 
     window.electron.ipcRenderer.on('get-favicons', getIcons)
