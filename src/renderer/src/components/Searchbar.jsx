@@ -1,7 +1,20 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 const Searchbar = () => {
   const searchBarRef = useRef(null)
+
+  useEffect(() => {
+    const updateUrl = (event, data) => {
+      const { url } = data
+      searchBarRef.current.value = url
+    }
+
+    window.electron.ipcRenderer.on('update-url', updateUrl)
+
+    return () => {
+      window.electron.ipcRenderer.removeListener('update-url', updateUrl)
+    }
+  }, [])
 
   return (
     <div

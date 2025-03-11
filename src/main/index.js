@@ -133,6 +133,7 @@ app.whenReady().then(() => {
 function createTab() {
   const tab = new WebContentsView()
   const windowBounds = mainWindow.getBounds()
+  const index = tabs.length > 0 ? currentTab + 1 : 0
 
   tab.webContents.loadURL('https://google.com')
 
@@ -145,11 +146,58 @@ function createTab() {
     height: windowBounds.height - 40 - 8
   })
 
-  tabs.push({ tab })
+  tab.webContents.on('did-start-loading', () => {
+    const url = tab.webContents.getURL()
+    const domain = new URL(url).hostname
+
+    tabs[index].url = url
+    tabs[index].domain = domain
+
+    if (currentTab == index) {
+      mainWindow.webContents.send('update-url', { url })
+    }
+
+    sendTabList()
+  })
+
+  tab.webContents.on('page-favicon-updated', async () => {
+    const url = tab.webContents.getURL()
+    const iconUrl = await getIcon(tab, url)
+
+    tabs[index].icon = iconUrl
+    sendTabList()
+  })
+
+  tab.webContents.on('page-title-updated', () => {
+    const title = tab.webContents.getTitle()
+
+    tabs[index].title = title
+    sendTabList()
+  })
+
+  tabs.push({ tab, icon: null, title: null, url: null, domain: null })
   mainWindow.contentView.addChildView(tab)
 
   switchTab(tabs.length - 1)
   sendTabList()
+}
+
+async function getIcon(tab, url) {
+  return new Promise((resolve, reject) => {
+    tab.webContents
+      .executeJavaScript(
+        `
+      const link = document.querySelector("link[rel='icon']") || document.querySelector("link[rel='shortcut icon']") || document.querySelector("link[rel='favicon']");
+      link ? link.href : '${url}/favicon.ico';
+    `
+      )
+      .then((faviconUrl) => {
+        resolve(faviconUrl)
+      })
+      .catch((err) => {
+        reject(err)
+      })
+  })
 }
 
 function closeTab(index) {
@@ -175,8 +223,11 @@ function switchTab(index) {
       t.tab.setVisible(false)
     }
 
+    const url = tabs[index].tab.webContents.getURL()
     tabs[index].tab.setVisible(true)
+
     mainWindow.webContents.send('update-tab', { index })
+    mainWindow.webContents.send('update-url', { url })
   }
 }
 
