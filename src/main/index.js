@@ -149,10 +149,22 @@ function createTab() {
   mainWindow.contentView.addChildView(tab)
 
   switchTab(tabs.length - 1)
+  sendTabList()
 }
 
-function closeTab(tabIndex) {
-  // close tab with index
+function closeTab(index) {
+  const tab = tabs[index].tab
+
+  mainWindow.contentView.removeChildView(tab)
+  tabs.splice(index, 1)
+
+  if (tabs.length < 1) {
+    createTab()
+  } else {
+    switchTab(index > 0 ? index - 1 : index)
+  }
+
+  sendTabList()
 }
 
 function switchTab(index) {
@@ -166,6 +178,16 @@ function switchTab(index) {
     tabs[index].tab.setVisible(true)
     mainWindow.webContents.send('update-tab', { index })
   }
+}
+
+function sendTabList() {
+  let tabData = []
+
+  for (let td of tabs) {
+    tabData.push({ icon: td.icon, title: td.title, domain: td.domain })
+  }
+
+  mainWindow.webContents.send('tab-list', { tabData })
 }
 
 function reloadTab() {
@@ -217,7 +239,7 @@ function registerShortcuts() {
   })
 
   globalShortcut.register('CommandOrControl+W', () => {
-    console.log('close current tab')
+    closeTab(currentTab)
   })
 
   globalShortcut.register('CommandOrControl+Tab', () => {
@@ -337,6 +359,11 @@ ipcMain.handle('update-current-tab', (event, data) => {
 
 ipcMain.handle('create-tab', () => {
   createTab()
+})
+
+ipcMain.handle('close-tab', (event, data) => {
+  const { index } = data
+  closeTab(index)
 })
 
 app.on('window-all-closed', () => {

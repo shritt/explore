@@ -20,6 +20,7 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, currentTab, setCurrent
             key={index}
             index={index}
             icon={tab.icon}
+            domain={tab.domain}
             title={tab.title}
             currentTab={currentTab}
             setCurrentTab={setCurrentTab}

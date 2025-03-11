@@ -6,24 +6,7 @@ import Sidebar from './components/Sidebar'
 const App = () => {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true)
 
-  const [tabs, setTabs] = useState([
-    {
-      icon: 'https://cdn.iconscout.com/icon/free/png-256/free-notion-logo-icon-download-in-svg-png-gif-file-formats--productivity-application-brand-apps-pack-logos-icons-8630396.png',
-      title: 'Monochromium'
-    },
-    {
-      // icon: 'https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-512.png',
-      // title: 'how to create a browser with electron & react - Google search'
-    },
-    {
-      // icon: 'https://img.icons8.com/m_rounded/512/spotify.png',
-      title: 'Cheques(Shubh) - Spotify'
-    },
-    {
-      // icon: 'https://cdn-icons-png.flaticon.com/512/2111/2111615.png',
-      title: 'Monochromium - Slack'
-    }
-  ])
+  const [tabs, setTabs] = useState([{}])
   const [currentTab, setCurrentTab] = useState(0)
 
   useEffect(() => {
@@ -40,13 +23,20 @@ const App = () => {
       setCurrentTab(index)
     }
 
+    const updateTabList = (event, data) => {
+      const { tabData } = data
+      setTabs(tabData)
+    }
+
     window.electron.ipcRenderer.on('open-sidebar', openSidebar)
     window.electron.ipcRenderer.on('close-sidebar', closeSidebar)
+    window.electron.ipcRenderer.on('tab-list', updateTabList)
     window.electron.ipcRenderer.on('update-tab', updateCurrentTab)
 
     return () => {
       window.electron.ipcRenderer.removeListener('open-sidebar', openSidebar)
       window.electron.ipcRenderer.removeListener('close-sidebar', openSidebar)
+      window.electron.ipcRenderer.removeListener('tab-list', updateTabList)
       window.electron.ipcRenderer.removeListener('update-tab', updateCurrentTab)
     }
   }, [])
