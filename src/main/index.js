@@ -146,7 +146,7 @@ function createTab() {
     height: windowBounds.height - 40 - 8
   })
 
-  tab.webContents.on('did-start-loading', () => {
+  tab.webContents.on('did-navigate', () => {
     const url = tab.webContents.getURL()
     const domain = new URL(url).hostname
 
@@ -157,14 +157,6 @@ function createTab() {
       mainWindow.webContents.send('update-url', { url })
     }
 
-    sendTabList()
-  })
-
-  tab.webContents.on('page-favicon-updated', async () => {
-    const url = tab.webContents.getURL()
-    const iconUrl = await getIcon(tab, url)
-
-    tabs[index].icon = iconUrl
     sendTabList()
   })
 
@@ -180,24 +172,6 @@ function createTab() {
 
   switchTab(tabs.length - 1)
   sendTabList()
-}
-
-async function getIcon(tab, url) {
-  return new Promise((resolve, reject) => {
-    tab.webContents
-      .executeJavaScript(
-        `
-      const link = document.querySelector("link[rel='icon']") || document.querySelector("link[rel='shortcut icon']") || document.querySelector("link[rel='favicon']");
-      link ? link.href : '${url}/favicon.ico';
-    `
-      )
-      .then((faviconUrl) => {
-        resolve(faviconUrl)
-      })
-      .catch((err) => {
-        reject(err)
-      })
-  })
 }
 
 function closeTab(index) {
