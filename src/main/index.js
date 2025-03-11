@@ -162,7 +162,8 @@ function createTab() {
   })
 
   tab.webContents.on('page-favicon-updated', (event, favicons) => {
-    mainWindow.webContents.send('get-favicons', { favicons, currentTab })
+    tabs[index].icon = favicons[0]
+    sendTabList()
   })
 
   tab.webContents.on('page-title-updated', () => {
