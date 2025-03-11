@@ -1,6 +1,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
+import noIcon from '../assets/no-icon.png?asset'
+
 const Tab = ({ index, icon, title, currentTab, setCurrentTab, isExpanded }) => {
   return (
     <motion.div
@@ -16,14 +18,14 @@ const Tab = ({ index, icon, title, currentTab, setCurrentTab, isExpanded }) => {
       style={{ alignItems: 'center' }}
     >
       <img
-        src={icon}
+        src={icon || noIcon}
         className={`${isExpanded == true ? 'h-[20px]' : 'h-[18px]'} w-[20px] block`}
       />
       <motion.p
         animate={{ opacity: isExpanded == true ? 1 : 0 }}
         className="text-[12px] overflow-hidden whitespace-nowrap"
       >
-        {title}
+        {title || 'Welcome - Monochromium'}
       </motion.p>
       <motion.div
         initial={{ opacity: 1 }}

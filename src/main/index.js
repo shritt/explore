@@ -152,14 +152,7 @@ function createTab() {
 }
 
 function closeTab(tabIndex) {
-  // make tab sleep mode with tab being closed by index
-  //
-  // remove tab from frontend, while preserving original tab to open it after
-  // being closed
-  //
-  // make it quiet so it doesn't work in background
-  //
-  // should not show when switching tabs
+  // close tab with index
 }
 
 function switchTab(index) {
@@ -192,7 +185,7 @@ function resizeTab() {
 }
 
 function registerShortcuts() {
-  globalShortcut.register('CommandOrControl+S', () => {
+  globalShortcut.register('CommandOrControl+Alt+S', () => {
     if (isSidebarOpen == true) {
       mainWindow.webContents.send('close-sidebar')
     } else {

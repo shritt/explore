@@ -9,7 +9,7 @@ const Searchbar = () => {
       style={{ appRegion: 'no-drag', alignItems: 'center' }}
     >
       {/* lock button */}
-      <div className="h-[24px] w-[32px] rounded-full bg-[var(--bg-dark)] dark:bg-[var(--bg-light)] relative">
+      <div className="h-[24px] w-[36px] rounded-full bg-[var(--bg-dark)] dark:bg-[var(--bg-light)] relative">
         <svg
           width="18px"
           height="18px"
