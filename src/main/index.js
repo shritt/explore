@@ -161,6 +161,11 @@ function createTab() {
     sendTabList()
   })
 
+  tab.webContents.on('page-favicon-updated', (event, favicons) => {
+    mainWindow.webContents.send('get-favicons', { favicons })
+    sendTabList()
+  })
+
   tab.webContents.on('page-title-updated', () => {
     const title = tab.webContents.getTitle()
 
@@ -202,7 +207,11 @@ function switchTab(index) {
     tabs[index].tab.setVisible(true)
 
     mainWindow.webContents.send('update-tab', { index })
-    mainWindow.webContents.send('update-url', { url })
+    mainWindow.webContents.send('update-url', {
+      url,
+      canGoBack: tabs[index].tab.webContents.navigationHistory.canGoBack(),
+      canGoForward: tabs[index].tab.webContents.navigationHistory.canGoForward()
+    })
   }
 }
 

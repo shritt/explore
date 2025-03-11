@@ -1,6 +1,19 @@
 import React from 'react'
 
 const Searchbar = ({ searchBarRef }) => {
+  const validateQuery = (str) => {
+    var pattern = new RegExp(
+      '^(https?:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$',
+      'i'
+    ) // fragment locator
+    return !!pattern.test(str)
+  }
+
   return (
     <div
       className="flex min-w-[400px] w-[600px] mx-[12px] bg-[#fff] dark:bg-[#242424] h-[32px] rounded-full px-[4px] gap-[8px] shadow-sm"
@@ -37,11 +50,15 @@ const Searchbar = ({ searchBarRef }) => {
         }}
         onKeyDown={async (e) => {
           if (e.key == 'Enter') {
-            const query = searchBarRef.current.value
+            const query = searchBarRef.current.value.trim()
             let url = `https://google.com/search?q=${query}`
 
-            if (query.startsWith('http') || query.startsWith('https')) {
-              url = query
+            if (validateQuery(query)) {
+              if (query.startsWith('https://')) {
+                url = query
+              } else {
+                url = `https://${query}`
+              }
             }
 
             searchBarRef.current.blur()

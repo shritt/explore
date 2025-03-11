@@ -1,10 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-
-import noIcon from '../assets/no-icon.png?asset'
+import ImageWithFallback from './ImageWithFallback'
 
 const Tab = ({ index, title, currentTab, setCurrentTab, domain, isExpanded }) => {
   const [isOvering, setIsOvering] = useState(false)
+  const [icon, setIcon] = useState(null)
+
+  useEffect(() => {
+    const getIcons = (event, data) => {
+      const { favicons } = data
+      setIcon(favicons[0])
+    }
+
+    window.electron.ipcRenderer.on('get-favicons', getIcons)
+    return () => window.electron.ipcRenderer.removeListener('get-favicons', getIcons)
+  }, [])
 
   return (
     <motion.div
@@ -25,8 +35,13 @@ const Tab = ({ index, title, currentTab, setCurrentTab, domain, isExpanded }) =>
       className={`relative flex gap-[6px] bg-[#fff] dark:bg-[#242424] rounded-full h-[38px] w-[180px] px-[10px] transition-[outline] duration-300 outline-2 -outline-offset-2 shadow ${currentTab == index ? 'outline-[rgba(0,0,0,0.5)] dark:outline-[rgba(255,255,255,0.5)]' : 'outline-transparent'}`}
       style={{ alignItems: 'center' }}
     >
-      <img
-        src={`https://www.google.com/s2/favicons?domain=${domain}&sz=32` || noIcon}
+      {/* <img
+        src={`https://www.google.com/s2/favicons?domain=${domain}&sz=32`}
+        className={`${isExpanded == true ? 'h-[20px]' : 'h-[18px]'} w-[20px] block`}
+      /> */}
+      <ImageWithFallback
+        src={icon}
+        fallback={`https://www.google.com/s2/favicons?domain=${domain}&sz=32`}
         className={`${isExpanded == true ? 'h-[20px]' : 'h-[18px]'} w-[20px] block`}
       />
       <motion.p
