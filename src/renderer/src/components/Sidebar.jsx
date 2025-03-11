@@ -18,7 +18,7 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, currentTab, setCurrent
         {tabs.map((tab, index) => (
           <Tab
             key={index}
-            index={tab.index}
+            index={index}
             icon={tab.icon}
             title={tab.title}
             currentTab={currentTab}

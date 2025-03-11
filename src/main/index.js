@@ -145,7 +145,7 @@ function createTab() {
     height: windowBounds.height - 40 - 8
   })
 
-  tabs.push({ index: tabs.length + 1, tab, isClosed: false })
+  tabs.push({ tab })
   mainWindow.contentView.addChildView(tab)
 
   switchTab(tabs.length - 1)
