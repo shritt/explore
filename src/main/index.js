@@ -150,11 +150,13 @@ function createTab(url) {
     tabs[index].url = url
     tabs[index].domain = domain
 
-    mainWindow.webContents.send('update-url', {
-      url,
-      canGoBack: tab.webContents.navigationHistory.canGoBack(),
-      canGoForward: tab.webContents.navigationHistory.canGoForward()
-    })
+    if (currentTab == index) {
+      mainWindow.webContents.send('update-url', {
+        url,
+        canGoBack: tab.webContents.navigationHistory.canGoBack(),
+        canGoForward: tab.webContents.navigationHistory.canGoForward()
+      })
+    }
     sendTabList()
   })
 
