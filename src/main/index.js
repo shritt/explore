@@ -206,7 +206,9 @@ function switchTab(index) {
     }
 
     const url = tabs[index].tab.webContents.getURL()
+
     tabs[index].tab.setVisible(true)
+    resizeTab()
 
     mainWindow.webContents.send('update-tab', { index })
     mainWindow.webContents.send('update-url', {
