@@ -124,10 +124,7 @@ app.whenReady().then(() => {
   })
 
   registerShortcuts()
-
-  // ----------------------------------------------
   createTab()
-  // ----------------------------------------------
 })
 
 function createTab() {
@@ -161,9 +158,21 @@ function createTab() {
     sendTabList()
   })
 
+  tab.webContents.on('did-navigate', () => {
+    mainWindow.webContents.send('set-isloading', { index, isLoading: true })
+    sendTabList()
+  })
+
+  tab.webContents.on('did-finish-load', () => {
+    mainWindow.webContents.send('set-isloading', { index, isLoading: false })
+    sendTabList()
+  })
+
   tab.webContents.on('page-favicon-updated', (event, favicons) => {
     if (tabs[index]) {
-      tabs[index].icon = favicons[0]
+      const favicon = favicons.find((url) => url.includes('32')) || favicons[0]
+
+      tabs[index].icon = favicon
       sendTabList()
     }
   })
@@ -191,7 +200,9 @@ function closeTab(index) {
   if (tabs.length < 1) {
     createTab()
   } else {
-    switchTab(index > 0 ? index - 1 : index)
+    if (index == tabs.length) {
+      switchTab(index == 0 ? index + 1 : index)
+    }
   }
 
   sendTabList()

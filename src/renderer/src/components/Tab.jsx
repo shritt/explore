@@ -1,9 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+
+import loadingGif from '../assets/loading.gif?asset'
 import ImageWithFallback from './ImageWithFallback'
 
 const Tab = ({ index, title, icon, currentTab, setCurrentTab, domain, isExpanded }) => {
+  const [isLoading, setIsLoading] = useState(true)
   const [isOvering, setIsOvering] = useState(false)
+
+  useEffect(() => {
+    const handleLoading = (event, data) => {
+      if (data.index == index) {
+        setIsLoading(data.isLoading)
+      }
+    }
+
+    window.electron.ipcRenderer.on('set-isloading', handleLoading)
+    return () => window.electron.ipcRenderer.removeListener('set-isloading', handleLoading)
+  }, [])
 
   return (
     <motion.div
@@ -25,7 +39,7 @@ const Tab = ({ index, title, icon, currentTab, setCurrentTab, domain, isExpanded
       style={{ alignItems: 'center' }}
     >
       <ImageWithFallback
-        src={icon}
+        src={isLoading == true ? loadingGif : icon}
         fallback={`https://www.google.com/s2/favicons?domain=${domain}&sz=32`}
         className={`${isExpanded == true ? 'h-[20px]' : 'h-[18px]'} w-[20px] block`}
       />
