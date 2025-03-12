@@ -127,12 +127,12 @@ app.whenReady().then(() => {
   createTab()
 })
 
-function createTab() {
+function createTab(url) {
   const tab = new WebContentsView()
   const windowBounds = mainWindow.getBounds()
   const index = tabs.length
 
-  tab.webContents.loadURL('https://google.com')
+  tab.webContents.loadURL(url || 'https://google.com')
 
   tab.setBackgroundColor('white')
   tab.setBorderRadius(8)
@@ -158,7 +158,7 @@ function createTab() {
     sendTabList()
   })
 
-  tab.webContents.on('did-navigate', () => {
+  tab.webContents.on('will-navigate', () => {
     mainWindow.webContents.send('set-isloading', { index, isLoading: true })
     sendTabList()
   })
@@ -184,6 +184,11 @@ function createTab() {
     sendTabList()
   })
 
+  tab.webContents.on('did-create-window', (window, details) => {
+    createTab(details.url)
+    window.close()
+  })
+
   tabs.push({ tab, icon: null, title: null, url: null, domain: null })
   mainWindow.contentView.addChildView(tab)
 
@@ -201,7 +206,9 @@ function closeTab(index) {
     createTab()
   } else {
     if (index == tabs.length) {
-      switchTab(index == 0 ? index + 1 : index)
+      switchTab(index - 1)
+    } else {
+      switchTab(index)
     }
   }
 

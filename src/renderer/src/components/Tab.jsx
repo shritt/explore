@@ -47,7 +47,7 @@ const Tab = ({ index, title, icon, currentTab, setCurrentTab, domain, isExpanded
         animate={{ opacity: isExpanded == true ? 1 : 0 }}
         className="text-[12px] overflow-hidden whitespace-nowrap"
       >
-        {title || 'Welcome - Monochromium'}
+        {title || 'Loading'}
       </motion.p>
       <motion.div
         initial={{ opacity: 1 }}
