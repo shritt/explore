@@ -249,9 +249,15 @@ function sendTabList() {
   mainWindow.webContents.send('tab-list', { tabData })
 }
 
-function reloadTab() {
+function reloadTab({ fromCache }) {
   const activeTab = tabs[currentTab].tab
-  activeTab.webContents.reload()
+
+  if (fromCache == true) {
+    activeTab.webContents.reload()
+  } else {
+    activeTab.webContents.reloadIgnoringCache()
+  }
+  mainWindow.webContents.send('set-isloading', { index: currentTab, isLoading: true })
 }
 
 function resizeTab() {
@@ -278,15 +284,15 @@ function registerShortcuts() {
   })
 
   globalShortcut.register('CommandOrControl+R', () => {
-    reloadTab()
+    reloadTab({ fromCache: false })
   })
 
   globalShortcut.register('CommandOrControl+Shift+R', () => {
-    reloadTab()
+    reloadTab({ fromCache: false })
   })
 
   globalShortcut.register('F5', () => {
-    reloadTab()
+    reloadTab({ fromCache: true })
   })
 
   globalShortcut.register('CommandOrControl+T', () => {
@@ -399,20 +405,25 @@ ipcMain.handle('go-forward', () => {
 })
 
 ipcMain.handle('reload', () => {
-  const activeTab = tabs[currentTab].tab
-  activeTab.webContents.reload()
+  const activeTab = tabs[currentTab] && tabs[currentTab].tab
+
+  if (activeTab) {
+    activeTab.webContents.reload()
+  }
 })
 
 ipcMain.handle('load-url', (event, data) => {
-  const activeTab = tabs[currentTab].tab
+  const activeTab = tabs[currentTab] && tabs[currentTab].tab
   const url = data
 
-  activeTab.webContents.loadURL(url)
+  if (activeTab) {
+    activeTab.webContents.loadURL(url)
+    mainWindow.webContents.send('set-isloading', { index: currentTab, isLoading: true })
+  }
 })
 
 ipcMain.handle('update-current-tab', (event, data) => {
   const { index } = data
-
   switchTab(index)
 })
 
