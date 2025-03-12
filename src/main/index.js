@@ -25,6 +25,7 @@ const userPreferences = new Store({
 
 let mainWindow = null
 let isSidebarOpen = true
+let closedTabs = 0
 
 let tabs = []
 let currentTab = 0
@@ -207,10 +208,10 @@ function closeTab(index) {
   if (tabs.length < 1) {
     createTab()
   } else {
-    if (index == tabs.length) {
-      switchTab(index - 1)
+    if (index < currentTab) {
+      switchTab(currentTab - 1)
     } else {
-      switchTab(index)
+      switchTab(currentTab)
     }
   }
 
@@ -418,7 +419,10 @@ ipcMain.handle('load-url', (event, data) => {
 
   if (activeTab) {
     activeTab.webContents.loadURL(url)
-    mainWindow.webContents.send('set-isloading', { index: currentTab, isLoading: true })
+    mainWindow.webContents.send('set-isloading', {
+      index: currentTab,
+      isLoading: true
+    })
   }
 })
 

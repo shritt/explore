@@ -58,7 +58,8 @@ const Tab = ({ index, title, icon, currentTab, setCurrentTab, domain, isExpanded
       <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: isOvering == true ? 1 : 0 }}
-        onClick={async () => {
+        onClick={async (e) => {
+          e.stopPropagation()
           await window.electron.ipcRenderer.invoke('close-tab', { index })
         }}
         className={`absolute right-[8px] top-1/2 -translate-y-1/2 ${isExpanded == true ? 'block' : 'hidden'} p-[1.5px] rounded-full bg-[#e0e0e0] dark:bg-[#313131] cursor-pointer`}
