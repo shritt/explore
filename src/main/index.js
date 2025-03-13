@@ -205,7 +205,7 @@ function closeTab(index) {
   mainWindow.contentView.removeChildView(tab)
   tabs[index].isClosed = true
 
-  if (index == firstOpenTab.index) {
+  if (index == firstOpenTab.index && index == currentTab) {
     if (index == 0) {
       switchTab(1)
     } else {
@@ -219,19 +219,9 @@ function closeTab(index) {
   sendTabList()
 }
 
-// function findNextOpenTab(index) {
-//   let tempIndex = index
-//   while (tabs[tempIndex].isClosed == true) {
-//     tempIndex++
-//   }
-
-//   return index
-// }
-
 function switchTab(index) {
   if (tabs.length > index) {
     currentTab = index
-    // currentTab = findNextOpenTab(index)
 
     for (let t of tabs) {
       t.tab.setVisible(false)
