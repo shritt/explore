@@ -25,7 +25,6 @@ const userPreferences = new Store({
 
 let mainWindow = null
 let isSidebarOpen = true
-let closedTabs = 0
 
 let tabs = []
 let currentTab = 0
@@ -192,7 +191,7 @@ function createTab(url) {
     window.close()
   })
 
-  tabs.push({ tab, icon: null, title: null, url: null, domain: null })
+  tabs.push({ tab, icon: null, title: null, url: null, domain: null, isClosed: false, index })
   mainWindow.contentView.addChildView(tab)
 
   switchTab(tabs.length - 1)
@@ -201,26 +200,38 @@ function createTab(url) {
 
 function closeTab(index) {
   const tab = tabs[index].tab
+  const firstOpenTab = tabs.find((item) => item.isClosed === false)
 
   mainWindow.contentView.removeChildView(tab)
-  tabs.splice(index, 1)
+  tabs[index].isClosed = true
 
-  if (tabs.length < 1) {
-    createTab()
-  } else {
-    if (index < currentTab) {
-      switchTab(currentTab - 1)
+  if (index == firstOpenTab.index) {
+    if (index == 0) {
+      switchTab(1)
     } else {
-      switchTab(currentTab)
+      switchTab(index + 1)
     }
+  } else if (index == currentTab) {
+    switchTab(currentTab - 1)
+  } else {
+    switchTab(currentTab)
   }
-
   sendTabList()
 }
+
+// function findNextOpenTab(index) {
+//   let tempIndex = index
+//   while (tabs[tempIndex].isClosed == true) {
+//     tempIndex++
+//   }
+
+//   return index
+// }
 
 function switchTab(index) {
   if (tabs.length > index) {
     currentTab = index
+    // currentTab = findNextOpenTab(index)
 
     for (let t of tabs) {
       t.tab.setVisible(false)
@@ -244,7 +255,8 @@ function sendTabList() {
   let tabData = []
 
   for (let td of tabs) {
-    tabData.push({ icon: td.icon, title: td.title, domain: td.domain })
+    const { icon, title, domain, isClosed, index } = td
+    tabData.push({ icon, title, domain, isClosed, index })
   }
 
   mainWindow.webContents.send('tab-list', { tabData })
@@ -406,7 +418,7 @@ ipcMain.handle('go-forward', () => {
 })
 
 ipcMain.handle('reload', () => {
-  const activeTab = tabs[currentTab] && tabs[currentTab].tab
+  const activeTab = tabs[currentTab].tab
 
   if (activeTab) {
     activeTab.webContents.reload()
@@ -414,7 +426,7 @@ ipcMain.handle('reload', () => {
 })
 
 ipcMain.handle('load-url', (event, data) => {
-  const activeTab = tabs[currentTab] && tabs[currentTab].tab
+  const activeTab = tabs[currentTab].tab
   const url = data
 
   if (activeTab) {

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import loadingGif from '../assets/loading.gif?asset'
 import ImageWithFallback from './ImageWithFallback'
 
-const Tab = ({ index, title, icon, currentTab, setCurrentTab, domain, isExpanded }) => {
+const Tab = ({ index, title, icon, currentTab, setCurrentTab, domain, isClosed, isExpanded }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [isOvering, setIsOvering] = useState(false)
 
@@ -19,7 +19,7 @@ const Tab = ({ index, title, icon, currentTab, setCurrentTab, domain, isExpanded
     return () => window.electron.ipcRenderer.removeListener('set-isloading', handleLoading)
   }, [])
 
-  return (
+  return isClosed == false ? (
     <motion.div
       initial={{ width: 180, scale: 0 }}
       animate={{ width: isExpanded == true ? 180 : 38, scale: 1 }}
@@ -74,7 +74,7 @@ const Tab = ({ index, title, icon, currentTab, setCurrentTab, domain, isExpanded
         </svg>
       </motion.button>
     </motion.div>
-  )
+  ) : null
 }
 
 export default Tab
