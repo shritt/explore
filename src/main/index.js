@@ -132,7 +132,7 @@ function createTab(url) {
   const windowBounds = mainWindow.getBounds()
   const index = tabs.length
 
-  tab.webContents.loadURL(url || 'https://google.com')
+  tab.webContents.loadURL(url || 'https://duckduckgo.com')
 
   tab.setBackgroundColor('white')
   tab.setBorderRadius(8)
@@ -194,7 +194,7 @@ function createTab(url) {
   tabs.push({ tab, icon: null, title: null, url: null, domain: null, isClosed: false, index })
   mainWindow.contentView.addChildView(tab)
 
-  switchTab(tabs.length - 1)
+  switchTab(index)
   sendTabList()
 }
 
@@ -205,12 +205,10 @@ function closeTab(index) {
   mainWindow.contentView.removeChildView(tab)
   tabs[index].isClosed = true
 
+  const nextOpenTab = tabs.find((item) => item.isClosed === false)
+
   if (index == firstOpenTab.index && index == currentTab) {
-    if (index == 0) {
-      switchTab(1)
-    } else {
-      switchTab(index + 1)
-    }
+    switchTab(nextOpenTab && nextOpenTab.index)
   } else if (index == currentTab) {
     switchTab(currentTab - 1)
   } else {
@@ -311,12 +309,13 @@ function registerShortcuts() {
   })
 
   globalShortcut.register('CommandOrControl+Tab', () => {
-    currentTab++
+    const firstOpenTab = tabs.find((item) => item.isClosed === false)
+    const nextOpenTab = tabs.find((item) => item.index > currentTab && item.isClosed === false)
 
-    if (currentTab < tabs.length) {
-      switchTab(currentTab)
+    if (nextOpenTab) {
+      switchTab(nextOpenTab.index)
     } else {
-      switchTab(0)
+      switchTab(firstOpenTab.index)
     }
   })
 }

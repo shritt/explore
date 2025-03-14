@@ -35,7 +35,7 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, currentTab, setCurrent
           onClick={async () => {
             await window.electron.ipcRenderer.invoke('create-tab')
           }}
-          className="rounded-full bg-[#fff] dark:bg-[#242424] relative shadow-md h-[28px] w-[28px]"
+          className="rounded-full bg-[#fff] dark:bg-[#242424] relative shadow h-[28px] w-[28px]"
         >
           <svg
             width="24px"

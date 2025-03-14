@@ -28,16 +28,16 @@ const App = () => {
       setTabs(tabData)
     }
 
-    window.electron.ipcRenderer.on('open-sidebar', openSidebar)
-    window.electron.ipcRenderer.on('close-sidebar', closeSidebar)
     window.electron.ipcRenderer.on('tab-list', updateTabList)
     window.electron.ipcRenderer.on('update-tab', updateCurrentTab)
+    window.electron.ipcRenderer.on('open-sidebar', openSidebar)
+    window.electron.ipcRenderer.on('close-sidebar', closeSidebar)
 
     return () => {
-      window.electron.ipcRenderer.removeListener('open-sidebar', openSidebar)
-      window.electron.ipcRenderer.removeListener('close-sidebar', openSidebar)
       window.electron.ipcRenderer.removeListener('tab-list', updateTabList)
       window.electron.ipcRenderer.removeListener('update-tab', updateCurrentTab)
+      window.electron.ipcRenderer.removeListener('open-sidebar', openSidebar)
+      window.electron.ipcRenderer.removeListener('close-sidebar', openSidebar)
     }
   }, [])
 
@@ -53,7 +53,7 @@ const App = () => {
         setCurrentTab={setCurrentTab}
       />
       <div
-        className={`absolute outline-1 outline-[rgba(0,0,0,0.1)] rounded-[8px] h-[calc(100vh-40px-8px)] duration-250 top-[40px] ${isSidebarExpanded == true ? 'w-[calc(100vw-200px-6px)] left-[200px]' : 'w-[calc(100vw-52px-6px)] left-[52px]'}`}
+        className={`absolute shadow rounded-[8px] h-[calc(100vh-40px-8px)] duration-250 top-[40px] bg-[rgba(0,0,0,0.05)] dark:bg-[rgba(255,255,255,0.05)] ${isSidebarExpanded == true ? 'w-[calc(100vw-200px-8px)] left-[200px]' : 'w-[calc(100vw-52px-8px)] left-[52px]'}`}
       />
     </main>
   )
