@@ -19,13 +19,17 @@
 
 body {
   color: var(--text-light);
-  background-color: rgba(255, 255, 255, 0.67);
+  background-color: rgba(255, 255, 255, 0.75);
   overflow: hidden !important;
 }
 
 .top-bar {
   app-region: drag;
   user-select: none;
+}
+
+.tabs-list::-webkit-scrollbar {
+  display: none;
 }
 
 .side-bar {
@@ -48,6 +52,6 @@ body {
 @media (prefers-color-scheme: dark) {
   body {
     color: var(--text-dark);
-    background-color: rgba(0, 0, 0, 0.67);
+    background-color: rgba(0, 0, 0, 0.75);
   }
 }

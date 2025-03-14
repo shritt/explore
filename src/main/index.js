@@ -449,8 +449,8 @@ ipcMain.handle('update-current-tab', (event, data) => {
   switchTab(index)
 })
 
-ipcMain.handle('create-tab', () => {
-  createTab()
+ipcMain.handle('create-tab', (event, data) => {
+  createTab((data && data.url) || null)
 })
 
 ipcMain.handle('close-tab', (event, data) => {
