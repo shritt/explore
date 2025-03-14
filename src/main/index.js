@@ -219,6 +219,16 @@ function closeTab(index) {
   } else {
     switchTab(currentTab)
   }
+
+  tabs[index].tab = null
+  tabs[index].title = null
+  tabs[index].icon = null
+  tabs[index].domain = null
+  tabs[index].isLoading = false
+  tabs[index].isExpanded = null
+  tabs[index].currentTab = null
+  tabs[index].setCurrentTab = null
+
   sendTabList()
 }
 
@@ -227,7 +237,9 @@ function switchTab(index) {
     currentTab = index
 
     for (let t of tabs) {
-      t.tab.setVisible(false)
+      if (t.tab) {
+        t.tab.setVisible(false)
+      }
     }
 
     const url = tabs[index].tab.webContents.getURL()
