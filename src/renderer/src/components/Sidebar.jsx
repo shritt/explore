@@ -36,7 +36,7 @@ const Sidebar = ({ show, isExpanded, setIsExpanded, tabs, currentTab, setCurrent
     >
       {/* top div */}
       <div
-        className="tabs-list flex flex-col overflow-y-auto w-full"
+        className="tabs-list py-[2px] flex flex-col overflow-y-auto w-full"
         style={{ alignItems: 'center' }}
       >
         {/* tab list */}

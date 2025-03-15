@@ -33,7 +33,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: userPreferences.get('windowBounds').width,
     height: userPreferences.get('windowBounds').height,
-    // frame: false,
+    frame: false,
     backgroundMaterial: 'acrylic',
     show: false,
     autoHideMenuBar: true,
