@@ -53,7 +53,7 @@ const App = () => {
         setCurrentTab={setCurrentTab}
       />
       <div
-        className={`absolute shadow rounded-[8px] h-[calc(100vh-40px-8px)] duration-250 top-[40px] bg-[rgba(0,0,0,0.05)] dark:bg-[rgba(255,255,255,0.05)] ${isSidebarExpanded == true ? 'w-[calc(100vw-200px-8px)] left-[200px]' : 'w-[calc(100vw-52px-8px)] left-[52px]'}`}
+        className={`absolute shadow rounded-[12px] h-[calc(100vh-40px-8px)] duration-300 top-[40px] bg-[rgba(0,0,0,0.05)] dark:bg-[rgba(255,255,255,0.05)] ${isSidebarExpanded == true ? 'w-[calc(100vw-200px-8px)] left-[200px]' : 'w-[calc(100vw-52px-8px)] left-[52px]'}`}
       />
     </main>
   )

@@ -33,7 +33,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: userPreferences.get('windowBounds').width,
     height: userPreferences.get('windowBounds').height,
-    frame: false,
+    // frame: false,
     backgroundMaterial: 'acrylic',
     show: false,
     autoHideMenuBar: true,
@@ -135,7 +135,7 @@ function createTab(url) {
   tab.webContents.loadURL(url || 'https://duckduckgo.com')
 
   tab.setBackgroundColor('white')
-  tab.setBorderRadius(8)
+  tab.setBorderRadius(12)
   tab.setBounds({
     x: isSidebarOpen == true ? 200 : 52,
     y: 40,

@@ -8,7 +8,7 @@ const Favorite = ({ show, fav }) => {
       animate={{ opacity: show == true ? 1 : 0, scale: 1 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
-      className="h-[36px] bg-[#fff] rounded-[8px] relative shadow-sm"
+      className="h-[36px] bg-[#fff] dark:bg-[#212121] rounded-[8px] relative shadow-sm"
       onClick={async () => {
         await window.electron.ipcRenderer.invoke('create-tab', { url: fav.url })
       }}

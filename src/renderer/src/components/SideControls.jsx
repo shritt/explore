@@ -5,7 +5,7 @@ import Favorite from './Favorite'
 const SideControls = ({ favorites, isExpanded, setIsExpanded }) => {
   return (
     <>
-      <div className="flex flex-col gap-[12px] pt-[10px]" style={{ alignItems: 'center' }}>
+      <div className="flex flex-col gap-[16px] pt-[8px]" style={{ alignItems: 'center' }}>
         {/* favorites */}
         {favorites.length > 0 ? (
           <motion.div
@@ -20,24 +20,32 @@ const SideControls = ({ favorites, isExpanded, setIsExpanded }) => {
             ))}
           </motion.div>
         ) : null}
-        {/* sidebar button */}
+        {/* control buttons */}
         <motion.div
-          whileHover={{ y: -2 }}
-          whileTap={{ y: -4 }}
-          initial={{ width: 160 }}
-          animate={{ width: isExpanded == true ? 160 : 20 }}
-          className="flex h-[20px] gap-[8px] w-[160px]"
-          style={{ alignItems: 'center' }}
-          onClick={async () => {
-            if (isExpanded == true) {
-              await window.electron.ipcRenderer.invoke('close-sidebar')
-            } else {
-              await window.electron.ipcRenderer.invoke('open-sidebar')
-            }
-            setIsExpanded((prevVal) => !prevVal)
+          initial={{ flexDirection: 'row', justifyContent: 'center', width: 160 }}
+          animate={{
+            flexDirection: isExpanded == true ? 'row' : 'column',
+            justifyContent: isExpanded == true ? 'space-around' : 'center',
+            width: isExpanded == true ? 160 : 32
           }}
+          className="flex gap-[12px]"
+          style={{ alignItems: 'center' }}
         >
-          <div className="h-[20px]">
+          {/* sidebar button */}
+          <motion.div
+            whileHover={{ y: -2 }}
+            whileTap={{ y: -4 }}
+            className="h-[20px] w-[20px]"
+            style={{ alignItems: 'center' }}
+            onClick={async () => {
+              if (isExpanded == true) {
+                await window.electron.ipcRenderer.invoke('close-sidebar')
+              } else {
+                await window.electron.ipcRenderer.invoke('open-sidebar')
+              }
+              setIsExpanded((prevVal) => !prevVal)
+            }}
+          >
             <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none">
               <g id="SVGRepo_iconCarrier">
                 <g id="Complete">
@@ -72,24 +80,14 @@ const SideControls = ({ favorites, isExpanded, setIsExpanded }) => {
                 </g>
               </g>
             </svg>
-          </div>
-          <motion.p
-            animate={{ opacity: isExpanded == true ? 1 : 0 }}
-            className="overflow-hidden whitespace-nowrap text-[13px]"
+          </motion.div>
+          {/* clock button */}
+          <motion.div
+            whileHover={{ y: -2 }}
+            whileTap={{ y: -4 }}
+            className="h-[20px] w-[20px]"
+            style={{ alignItems: 'center' }}
           >
-            Toggle Sidebar
-          </motion.p>
-        </motion.div>
-        {/* clock button */}
-        <motion.div
-          whileHover={{ y: -2 }}
-          whileTap={{ y: -4 }}
-          initial={{ width: 160 }}
-          animate={{ width: isExpanded == true ? 160 : 20 }}
-          className="flex h-[20px] gap-[8px] w-[160px]"
-          style={{ alignItems: 'center' }}
-        >
-          <div className="h-[20px]">
             <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none">
               <g id="SVGRepo_iconCarrier">
                 <path
@@ -101,24 +99,14 @@ const SideControls = ({ favorites, isExpanded, setIsExpanded }) => {
                 />
               </g>
             </svg>
-          </div>
-          <motion.p
-            animate={{ opacity: isExpanded == true ? 1 : 0 }}
-            className="overflow-hidden whitespace-nowrap text-[13px]"
+          </motion.div>
+          {/* download button */}
+          <motion.div
+            whileHover={{ y: -2 }}
+            whileTap={{ y: -4 }}
+            className="h-[20px] w-[20px]"
+            style={{ alignItems: 'center' }}
           >
-            History
-          </motion.p>
-        </motion.div>
-        {/* download button */}
-        <motion.div
-          whileHover={{ y: -2 }}
-          whileTap={{ y: -4 }}
-          initial={{ width: 160 }}
-          animate={{ width: isExpanded == true ? 160 : 20 }}
-          className="flex h-[20px] gap-[8px] w-[160px]"
-          style={{ alignItems: 'center' }}
-        >
-          <div className="h-[20px]">
             <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none">
               <g id="SVGRepo_iconCarrier">
                 <g id="Complete">
@@ -160,24 +148,14 @@ const SideControls = ({ favorites, isExpanded, setIsExpanded }) => {
                 </g>
               </g>
             </svg>
-          </div>
-          <motion.p
-            animate={{ opacity: isExpanded == true ? 1 : 0 }}
-            className="overflow-hidden whitespace-nowrap text-[13px]"
+          </motion.div>
+          {/* settings button */}
+          <motion.div
+            whileHover={{ y: -2 }}
+            whileTap={{ y: -4 }}
+            className="h-[20px] w-[20px]"
+            style={{ alignItems: 'center' }}
           >
-            Downloads
-          </motion.p>
-        </motion.div>
-        {/* settings button */}
-        <motion.div
-          whileHover={{ y: -2 }}
-          whileTap={{ y: -4 }}
-          initial={{ width: 160 }}
-          animate={{ width: isExpanded == true ? 160 : 20 }}
-          className="flex h-[20px] gap-[8px] w-[160px]"
-          style={{ alignItems: 'center' }}
-        >
-          <div className="h-[20px]">
             <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none">
               <g id="SVGRepo_iconCarrier">
                 <g id="Interface / Settings">
@@ -200,13 +178,7 @@ const SideControls = ({ favorites, isExpanded, setIsExpanded }) => {
                 </g>
               </g>
             </svg>
-          </div>
-          <motion.p
-            animate={{ opacity: isExpanded == true ? 1 : 0 }}
-            className="overflow-hidden whitespace-nowrap text-[13px]"
-          >
-            Settings
-          </motion.p>
+          </motion.div>
         </motion.div>
       </div>
     </>
