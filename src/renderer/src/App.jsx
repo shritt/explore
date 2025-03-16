@@ -4,7 +4,7 @@ import Topbar from './components/Topbar'
 import Sidebar from './components/Sidebar'
 
 const App = () => {
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true)
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false)
 
   const [tabs, setTabs] = useState([{}])
   const [currentTab, setCurrentTab] = useState(0)
@@ -43,7 +43,7 @@ const App = () => {
 
   return (
     <main>
-      <Topbar show={true} />
+      {/* <Topbar show={true} /> */}
       <Sidebar
         show={true}
         isExpanded={isSidebarExpanded}

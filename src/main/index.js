@@ -24,7 +24,7 @@ const userPreferences = new Store({
 })
 
 let mainWindow = null
-let isSidebarOpen = true
+let isSidebarOpen = false
 
 let tabs = []
 let currentTab = 0
@@ -36,10 +36,8 @@ function createWindow() {
     frame: false,
     backgroundMaterial: 'acrylic',
     show: false,
-    autoHideMenuBar: true,
-    maximizable: false,
     minWidth: 720,
-    titleBarStyle: 'hidden',
+    frame: false, 
     icon:
       process.platform == 'linux'
         ? pngIcon
@@ -59,6 +57,9 @@ function createWindow() {
     mainWindow.show()
   })
 
+  mainWindow.webContents.openDevTools();
+  
+
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
@@ -72,7 +73,7 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-  electronApp.setAppUserModelId('com.jpdoshi.tech')
+  electronApp.setAppUserModelId('com.shritk.explore')
 
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
@@ -132,15 +133,15 @@ function createTab(url) {
   const windowBounds = mainWindow.getBounds()
   const index = tabs.length
 
-  tab.webContents.loadURL(url || 'https://duckduckgo.com')
+  tab.webContents.loadURL(url || 'https://start.duckduckgo.com/')
 
   tab.setBackgroundColor('white')
   tab.setBorderRadius(12)
   tab.setBounds({
     x: isSidebarOpen == true ? 200 : 52,
-    y: 40,
+    y: 4,
     width: isSidebarOpen == true ? windowBounds.width - 200 - 8 : windowBounds.width - 52 - 8,
-    height: windowBounds.height - 40 - 8
+    height: windowBounds.height - 8
   })
 
   tab.webContents.on('did-navigate', () => {
@@ -283,9 +284,9 @@ function resizeTab() {
 
   tabs[currentTab].tab.setBounds({
     x: isSidebarOpen == true ? 200 : 52,
-    y: 40,
+    y: 4,
     width: isSidebarOpen == true ? width - 200 - 8 : width - 52 - 8,
-    height: height - 40 - 8
+    height: height - 8
   })
 }
 
@@ -341,8 +342,8 @@ function animateTab() {
   const { width, height } = mainWindow.getBounds()
   const targetX = isSidebarOpen ? 200 : 52
   const targetWidth = isSidebarOpen ? width - 200 - 8 : width - 52 - 8
-  const targetY = 40
-  const targetHeight = height - 40 - 8
+  const targetY = 4
+  const targetHeight = height - 8
 
   const tab = tabs[currentTab].tab
   const currentBounds = tab.getBounds()

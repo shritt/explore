@@ -1,5 +1,5 @@
-appId: com.jpdoshi.tech
-productName: monochromium
+appId: com.shritk.explore
+productName: explore
 directories:
   buildResources: build
 files:
@@ -11,7 +11,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: monochromium
+  executableName: explore
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}

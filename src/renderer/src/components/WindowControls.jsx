@@ -18,7 +18,7 @@ const WindowControls = () => {
       <motion.button
         whileHover={{ scale: 1.2 }}
         whileTap={{ scale: 2 / 3 }}
-        className="bg-[#fff] dark:bg-[#313131] dark:hover:bg-[#424242] group h-[24px] w-[24px] relative rounded-full shadow-sm"
+        className="bg-[#fff] dark:bg-[#313131] dark:hover:bg-[#424242] group h-[18px] w-[18px] relative rounded-full shadow-sm"
         onClick={async () => {
           await window.electron.ipcRenderer.invoke('minimize')
         }}
@@ -45,7 +45,7 @@ const WindowControls = () => {
       <motion.button
         whileHover={{ scale: 1.2 }}
         whileTap={{ scale: 2 / 3 }}
-        className="bg-[#fff] dark:bg-[#313131] dark:hover:bg-[#424242] group h-[24px] w-[24px] relative rounded-full shadow-sm"
+        className="bg-[#fff] dark:bg-[#313131] dark:hover:bg-[#424242] group h-[18px] w-[18px] relative rounded-full shadow-sm"
         onClick={async () => {
           const isMax = await window.electron.ipcRenderer.invoke('toggle-maximize')
           setIsMaximized(isMax)
@@ -90,7 +90,7 @@ const WindowControls = () => {
       <motion.button
         whileHover={{ scale: 1.2 }}
         whileTap={{ scale: 2 / 3 }}
-        className="bg-[#fff] dark:bg-[#313131] hover:bg-[#e53935] duration-200 transition-colors group h-[24px] w-[24px] relative rounded-full shadow-sm"
+        className="bg-[#fff] dark:bg-[#313131] hover:bg-[#e53935] duration-200 transition-colors group h-[18px] w-[18px] relative rounded-full shadow-sm"
         onClick={async () => {
           await window.electron.ipcRenderer.invoke('close-window')
         }}
